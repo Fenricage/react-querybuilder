@@ -4,15 +4,26 @@ import ReactDOM from "react-dom";
 import React from 'react';
 
 const fields = [
-    {name: 'firstName', label: 'First Name'},
-    {name: 'lastName', label: 'Last Name'},
-    {name: 'age', label: 'Age'},
-    {name: 'address', label: 'Address'},
-    {name: 'phone', label: 'Phone'},
-    {name: 'email', label: 'Email'},
-    {name: 'twitter', label: 'Twitter'},
-    {name: 'isDev', label: 'Is a Developer?', value: false},
+    {name: 'sensor_parameter', label: 'Sensor Parameter'},
+    {name: 'general_rule', label: 'General Rule'},
+    // {name: 'isDev', label: 'Is a Developer?', value: false},
 ];
+
+
+let test = {
+    id: 'g-ec15f867-b5a3-47a8-892b-ff69c192d912',
+    rules: [
+        {
+            id: 'r-9fd53882-8a00-4c81-8450-c9d5a5619690',
+            field: 'sensor_parameter',
+            value: 'asfasf',
+            operator: 'null',
+            custom: 'CUSTOm'
+        }
+    ],
+    combinator: 'and'
+}
+
 
 class RootView extends React.Component {
     constructor() {
