@@ -92,8 +92,6 @@ export default class QueryBuilder extends React.Component {
 
         return [
             {name: undefined, label: 'Select'},
-            {name: 'in', label: 'In'},
-            {name: 'notIn', label: 'Not In'},
             {name: '=', label: '='},
             {name: '!=', label: '!='},
             {name: '<', label: '<'},
