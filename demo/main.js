@@ -4,9 +4,34 @@ import ReactDOM from "react-dom";
 import React from 'react';
 
 const fields = [
+    {name: undefined, label: 'Condotion type..'},
     {name: 'sensor_parameter', label: 'Sensor Parameter'},
     {name: 'general_rule', label: 'General Rule'},
     // {name: 'isDev', label: 'Is a Developer?', value: false},
+];
+
+const ruleFields = [
+    {name: undefined, label: 'Select rule..'},
+    {name: 'hallway_motions', label: 'Hallway Motions'},
+    {name: 'in_house', label: 'In-House Status'},
+];
+
+const valuesGeneralRule = [
+    {name: undefined, label: 'value'},
+    {name: 'away', label: 'Away'},
+    {name: 'inside', label: 'Inside'},
+];
+
+const sensorFields = [
+    {name: undefined, label: 'Select sensor'},
+    {name: 'sensor_1', label: 'Sensor'},
+    {name: 'sensor_2', label: 'Sensor2'},
+];
+
+const objectFields = [
+    {name: undefined, label: 'Select object'},
+    {name: 'object_1', label: 'Object', type: "boolean"},
+    {name: 'object_2', label: 'Object2', type: "number"},
 ];
 
 
@@ -15,10 +40,10 @@ let test = {
     rules: [
         {
             id: 'r-9fd53882-8a00-4c81-8450-c9d5a5619690',
-            field: 'sensor_parameter',
-            value: 'asfasf',
-            operator: 'null',
-            custom: 'CUSTOm'
+            field: 'general_rule',
+            value: 'inside',
+            operator: '<',
+            ruleField: 'in_house'
         }
     ],
     combinator: 'and'
@@ -40,8 +65,14 @@ class RootView extends React.Component {
         return (
             <div className="flex-box">
                 <div className="scroll">
+
                     <QueryBuilder fields={this.props.fields}
-                                  controlElements={controlElements}
+                                  // query={test}
+                                  ruleFields={this.props.ruleFields}
+                                  valuesGeneralRule={this.props.valuesGeneralRule}
+                                  sensorFields={this.props.sensorFields}
+                                  objectFields={objectFields}
+                                  // controlElements={controlElements}
                                   controlClassnames={{fields: 'form-control'}}
                                   onQueryChange={this.logQuery.bind(this)}/>
                 </div>
@@ -84,5 +115,14 @@ class RootView extends React.Component {
 
 }
 
-ReactDOM.render(<RootView fields={fields}/>, document.querySelector('.container'));
+ReactDOM.render(
+    <RootView
+        fields={fields}
+        ruleFields={ruleFields}
+        valuesGeneralRule={valuesGeneralRule}
+        sensorFields={sensorFields}
+        objectFields={objectFields}
+    />,
+    document.querySelector('.container')
+);
 

@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import RuleGroup from './RuleGroup';
-import { ActionElement, ValueEditor, ValueSelector } from './controls/index';
+import {ActionElement, ValueEditor, ValueSelector} from './controls/index';
 
 export default class QueryBuilder extends React.Component {
     static get defaultProps() {
@@ -84,12 +84,14 @@ export default class QueryBuilder extends React.Component {
             combinators: {
                 title: "Combinators",
             }
+
         }
     }
 
     static get defaultOperators() {
 
         return [
+            {name: undefined, label: 'Select'},
             {name: 'null', label: 'Is Null'},
             {name: 'notNull', label: 'Is Not Null'},
             {name: 'in', label: 'In'},
@@ -143,8 +145,17 @@ export default class QueryBuilder extends React.Component {
         };
     }
 
+
+
     componentWillMount() {
-        const {fields, operators, combinators, controlElements, controlClassnames} = this.props;
+        const {
+            fields,
+            ruleFields,
+            operators,
+            combinators,
+            controlElements,
+            controlClassnames,
+        } = this.props;
         const classNames = Object.assign({}, QueryBuilder.defaultControlClassnames, controlClassnames);
         const controls = Object.assign({}, QueryBuilder.defaultControlElements, controlElements);
         this.setState({
@@ -161,12 +172,13 @@ export default class QueryBuilder extends React.Component {
                 onRuleAdd: this._notifyQueryChange.bind(this, this.onRuleAdd),
                 onGroupAdd: this._notifyQueryChange.bind(this, this.onGroupAdd),
                 onRuleRemove: this._notifyQueryChange.bind(this, this.onRuleRemove),
+                onTemplateRemove: this._notifyQueryChange.bind(this, this.onTemplateRemove),
                 onGroupRemove: this._notifyQueryChange.bind(this, this.onGroupRemove),
                 onPropChange: this._notifyQueryChange.bind(this, this.onPropChange),
                 getLevel: this.getLevel.bind(this),
                 isRuleGroup: this.isRuleGroup.bind(this),
                 controls,
-                getOperators: (...args)=>this.getOperators(...args),
+                getOperators: (...args) => this.getOperators(...args),
             }
         });
 
@@ -182,13 +194,17 @@ export default class QueryBuilder extends React.Component {
 
     render() {
         const {root: {id, rules, combinator}, schema} = this.state;
-        const {translations} = this.props;
+        const {translations, ruleFields, valuesGeneralRule, sensorFields, objectFields} = this.props;
 
         return (
             <div className={`queryBuilder ${schema.classNames.queryBuilder}`}>
                 <RuleGroup
                     translations={translations}
                     rules={rules}
+                    ruleFields={ruleFields}
+                    valuesGeneralRule={valuesGeneralRule}
+                    sensorFields={sensorFields}
+                    objectFields={objectFields}
                     combinator={combinator}
                     schema={schema}
                     id={id}
@@ -208,9 +224,9 @@ export default class QueryBuilder extends React.Component {
 
         return {
             id: `r-${uniqueId()}`,
-            field: fields[0].name,
-            value: '',
-            operator: operators[0].name
+            // field: fields[0].name,
+            // value: '',
+            // operator: operators[0].name
         };
     }
 
@@ -229,7 +245,6 @@ export default class QueryBuilder extends React.Component {
                 return ops;
             }
         }
-
 
         return this.props.operators;
     }
@@ -255,17 +270,52 @@ export default class QueryBuilder extends React.Component {
         this.setState({root: this.state.root});
     }
 
+
+    //Remove key from  fields template
+    onTemplateRemove(ruleId, parentId, templateName) {
+        const newState = Object.assign({}, this.state.root)
+
+        const parent = this._findRule(parentId, newState);
+        const index = parent.rules.findIndex(x => x.id === ruleId);
+        //obj assign for new rule
+        const rule = {...parent.rules[index]}
+        
+
+        for (let field in rule) {
+            // console.log("field===field", field==="field")
+            // console.log("rule", rule)
+            if((field !== "field") && (field !== "id")) {
+                console.log("field", field)
+                delete rule[field]
+            }
+        }
+
+
+
+        // delete rule.operator
+        // delete rule.ruleField
+        // delete rule.value
+
+        //obj assign
+        parent.rules[index] = {...rule}
+        console.log("parent.rules INDEX", rule)
+
+
+
+
+        this.setState({root: newState});
+    }
+
     onRuleRemove(ruleId, parentId) {
         const parent = this._findRule(parentId, this.state.root);
-        const index = parent.rules.findIndex(x=>x.id === ruleId);
-
+        const index = parent.rules.findIndex(x => x.id === ruleId);
         parent.rules.splice(index, 1);
         this.setState({root: this.state.root});
     }
 
     onGroupRemove(groupId, parentId) {
         const parent = this._findRule(parentId, this.state.root);
-        const index = parent.rules.findIndex(x=>x.id === groupId);
+        const index = parent.rules.findIndex(x => x.id === groupId);
 
         parent.rules.splice(index, 1);
         this.setState({root: this.state.root});
@@ -279,13 +329,13 @@ export default class QueryBuilder extends React.Component {
         const {isRuleGroup} = this.state.schema;
 
         var foundAtIndex = -1;
-        if(root.id === id ) {
+        if (root.id === id) {
             foundAtIndex = index;
-        } else if(isRuleGroup(root)) {
+        } else if (isRuleGroup(root)) {
             root.rules.forEach(rule => {
-                if(foundAtIndex === -1) {
+                if (foundAtIndex === -1) {
                     var indexForRule = index;
-                    if(isRuleGroup(rule))
+                    if (isRuleGroup(rule))
                         indexForRule++;
                     foundAtIndex = this._getLevel(id, indexForRule, rule);
                 }

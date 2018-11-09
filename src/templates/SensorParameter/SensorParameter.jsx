@@ -1,24 +1,29 @@
 import React, {Component, Fragment} from 'react';
-import "./GeneralRule.scss"
+import "./SensorParameter.scss"
 
-class GeneralRule extends Component {
+class SensorParameter extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            ruleIsSelected: false
+            ruleIsSelected: false,
+            objIsSelected: false,
+            operatorType: null
         }
     }
 
 
     componentDidMount() {
-        const {ruleField} = this.props
-        if (ruleField) {
+        const {sensorField} = this.props
+        if (sensorField) {
             this.setState({
                 ruleIsSelected: true
             })
         }
     }
+
+
+
 
 
     render() {
@@ -27,9 +32,12 @@ class GeneralRule extends Component {
             field,
             operator,
             custom,
-            ruleField,
             ruleFields,
             valuesGeneralRule,
+            sensorFields,
+            sensorField,
+            objectFields,
+            objectField,
             value,
             level,
             translations,
@@ -42,28 +50,33 @@ class GeneralRule extends Component {
             onOperatorChanged,
             onValueChanged,
             onCustomChanged,
-            onRuleFieldChanged
+            onRuleFieldChanged,
+            onSensorFieldChanged,
+            onObjectFieldChanged
         } = this.props
-        console.log("operator", operator)
+
+
+
+
+
         return (
             <Fragment>
 
                 {/*second field for dynamic add field next*/}
                 <section>
-                    <h3>Rule</h3>
+                    <h3>Sensor</h3>
                     {
                         React.createElement(controls.fieldSelector,
                             {
-                                options: ruleFields,
+                                options: sensorFields,
                                 title: translations.fields.title,
-                                value: ruleField,
+                                value: sensorField,
                                 className: `rule-fields ${classNames.fields}`,
                                 handleOnChange: (value) => {
                                     this.setState({
                                         ruleIsSelected: true
                                     })
-                                    onOperatorChanged("=")
-                                    onRuleFieldChanged(value)
+                                    onSensorFieldChanged(value)
                                 },
                                 level: level
                             }
@@ -76,18 +89,36 @@ class GeneralRule extends Component {
                     this.state.ruleIsSelected ?
                         (
                             <Fragment>
-                                <span>{operator ? operator : null}</span>
+                                {/*<span>*/}
+                                    {/*=*/}
+                                {/*</span>*/}
                                 <section>
-                                    <h3>Value</h3>
+                                    <h3>Object</h3>
                                     {
                                         React.createElement(controls.operatorSelector,
                                             {
                                                 field: field,
                                                 title: translations.operators.title,
-                                                options: valuesGeneralRule,
-                                                value: value,
+                                                options: objectFields,
+                                                value: objectField,
                                                 className: `rule-operators ${classNames.operators}`,
-                                                handleOnChange: onValueChanged,
+                                                handleOnChange: (value) => {
+
+                                                    console.log("objectFields", objectFields)
+                                                    let currentField = objectFields.find((field, index) => {
+                                                        return field.name === value
+                                                    })
+
+                                                    this.setState({
+                                                        operatorType: currentField.type
+                                                    })
+
+
+                                                    console.log("currentField", currentField)
+                                                    console.log("value", value)
+                                                    onObjectFieldChanged(value)
+
+                                                },
                                                 level: level
                                             }
                                         )
@@ -98,6 +129,14 @@ class GeneralRule extends Component {
                         null
                 }
 
+                {
+                    this.state.operatorType ?
+                        (
+                            <p>124</p>
+                        ) :
+                        (null)
+                }
+
 
 
             </Fragment>
@@ -106,4 +145,4 @@ class GeneralRule extends Component {
 }
 
 
-export default GeneralRule;
+export default SensorParameter;

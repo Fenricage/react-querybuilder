@@ -13,9 +13,26 @@ export default class RuleGroup extends React.Component {
     }
 
     render() {
-        const { combinator, rules, translations, schema: {combinators, controls, onRuleRemove, isRuleGroup, getLevel, classNames} } = this.props;
+        const {
+            combinator,
+            ruleFields,
+            rules,
+            valuesGeneralRule,
+            translations,
+            sensorFields,
+            objectFields,
+            schema: {
+                combinators,
+                controls,
+                onRuleRemove,
+                isRuleGroup,
+                onTemplateRemove,
+                getLevel,
+                classNames
+            }
+        } = this.props;
         const level = getLevel(this.props.id);
-          return (
+        return (
             <div className={`ruleGroup ${classNames.ruleGroup}`}>
                 {
                     React.createElement(controls.combinatorSelector,
@@ -67,30 +84,48 @@ export default class RuleGroup extends React.Component {
                             }
                         ) : null
                 }
-                 {
-                     rules.map(r=> {
-                         return (
-                             isRuleGroup(r)
-                                 ? <RuleGroup key={r.id}
-                                              id={r.id}
-                                              schema={this.props.schema}
-                                              parentId={this.props.id}
-                                              combinator={r.combinator}
-                                              translations={this.props.translations}
-                                              rules={r.rules}/>
-                                 : <Rule key={r.id}
-                                         id={r.id}
-                                         field={r.field}
-                                         value={r.value}
-                                         operator={r.operator}
-                                         custom={r.custom}
-                                         schema={this.props.schema}
-                                         parentId={this.props.id}
-                                         translations={this.props.translations}
-                                         onRuleRemove={onRuleRemove}/>
-                         );
-                     })
-                 }
+                {
+                    rules.map(r => {
+                        return (
+                            isRuleGroup(r)
+                                ? <RuleGroup key={r.id}
+                                             id={r.id}
+                                             ruleFields={ruleFields}
+                                             valuesGeneralRule={valuesGeneralRule}
+                                             sensorFields={sensorFields}
+                                             objectFields={objectFields}
+                                             schema={this.props.schema}
+                                             parentId={this.props.id}
+                                             combinator={r.combinator}
+                                             translations={this.props.translations}
+                                             rules={r.rules}/>
+                                : <Rule key={r.id}
+                                        id={r.id}
+                                        field={r.field}
+                                        value={r.value}
+                                        operator={r.operator}
+                                        custom={r.custom}
+
+                                        ruleFields={ruleFields}
+                                        ruleField={r.ruleField}
+
+                                        sensorFields={sensorFields}
+                                        sensorField={r.sensorField}
+
+                                        objectFields={objectFields}
+                                        objectField={r.objectField}
+
+                                        valuesGeneralRule={valuesGeneralRule}
+
+                                        schema={this.props.schema}
+                                        parentId={this.props.id}
+                                        translations={this.props.translations}
+                                        onRuleRemove={onRuleRemove}
+                                        onTemplateRemove={onTemplateRemove}
+                                />
+                        );
+                    })
+                }
             </div>
         );
     }
