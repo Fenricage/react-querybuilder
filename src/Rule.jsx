@@ -7,7 +7,7 @@ export default class Rule extends React.Component {
         return {
             id: '', //null
             parentId: '', //null
-            field: '', //null
+            type: '', //null
             operator: '', //null
             value: '', //null
             schema: {}, //null
@@ -27,6 +27,7 @@ export default class Rule extends React.Component {
 
     render() {
         const {
+            type,
             field,
             operator,
             valuesGeneralRule,
@@ -40,7 +41,7 @@ export default class Rule extends React.Component {
             value,
             translations,
             schema: {
-                fields,
+                types,
                 controls,
                 getOperators,
                 getLevel,
@@ -53,11 +54,11 @@ export default class Rule extends React.Component {
 
         let rule = null
 
-        switch (field) {
+        switch (type) {
             case "general_rule":
                 rule = (
                     <GeneralRule
-                        field={field}
+                        type={type}
                         ruleField={ruleField}
                         ruleFields={ruleFields}
                         valuesGeneralRule={valuesGeneralRule}
@@ -65,7 +66,7 @@ export default class Rule extends React.Component {
                         custom={custom}
                         value={value}
                         translations={translations}
-                        fields={fields}
+                        types={types}
                         controls={controls}
                         getOperators={getOperators}
                         getLevel={getLevel}
@@ -82,7 +83,7 @@ export default class Rule extends React.Component {
             case "sensor_parameter":
                 rule = (
                     <SensorParameter
-                        field={field}
+                        type={type}
                         ruleField={ruleField}
                         ruleFields={ruleFields}
                         operator={operator}
@@ -94,7 +95,7 @@ export default class Rule extends React.Component {
                         objectField={objectField}
                         value={value}
                         translations={translations}
-                        fields={fields}
+                        types={types}
                         controls={controls}
                         getOperators={getOperators}
                         getLevel={getLevel}
@@ -122,9 +123,9 @@ export default class Rule extends React.Component {
                     {
                         React.createElement(controls.fieldSelector,
                             {
-                                options: fields,
-                                title: translations.fields.title,
-                                value: field,
+                                options: types,
+                                title: translations.types.title,
+                                value: type,
                                 className: `rule-fields ${classNames.fields}`,
                                 handleOnChange: this.onFieldChanged,
                                 level: level
@@ -197,7 +198,7 @@ export default class Rule extends React.Component {
 
     onFieldChanged = (value) => {
         this.removeTemplate("main")
-        this.onElementChanged('field', value);
+        this.onElementChanged('type', value);
 
     }
 
@@ -223,6 +224,10 @@ export default class Rule extends React.Component {
 
     onObjectFieldChanged = (value) => {
         this.onElementChanged('objectField', value);
+    }
+
+    onVerboseNameChanged = (value) => {
+        this.onElementChanged('verbose_name', value);
     }
 
     onElementChanged = (property, value) => {

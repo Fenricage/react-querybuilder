@@ -10,7 +10,7 @@ export default class QueryBuilder extends React.Component {
     static get defaultProps() {
         return {
             query: null,
-            fields: [],
+            types: [],
             operators: QueryBuilder.defaultOperators,
             combinators: QueryBuilder.defaultCombinators,
             translations: QueryBuilder.defaultTranslations,
@@ -24,7 +24,7 @@ export default class QueryBuilder extends React.Component {
     static get propTypes() {
         return {
             query: PropTypes.object,
-            fields: PropTypes.array.isRequired,
+            types: PropTypes.array.isRequired,
             operators: PropTypes.array,
             combinators: PropTypes.array,
             controlElements: PropTypes.shape({
@@ -56,8 +56,8 @@ export default class QueryBuilder extends React.Component {
     static get defaultTranslations() {
 
         return {
-            fields: {
-                title: "Fields",
+            types: {
+                title: "Types",
             },
             operators: {
                 title: "Operators",
@@ -120,7 +120,7 @@ export default class QueryBuilder extends React.Component {
             removeGroup: '',
 
             rule: '',
-            fields: '',
+            types: '',
             operators: '',
             value: '',
             removeRule: '',
@@ -145,7 +145,7 @@ export default class QueryBuilder extends React.Component {
 
     componentWillMount() {
         const {
-            fields,
+            types,
             ruleFields,
             operators,
             combinators,
@@ -157,7 +157,7 @@ export default class QueryBuilder extends React.Component {
         this.setState({
             root: this.getInitialQuery(),
             schema: {
-                fields,
+                types,
                 operators,
                 combinators,
 
@@ -216,7 +216,7 @@ export default class QueryBuilder extends React.Component {
     }
 
     createRule() {
-        const {fields, operators} = this.state.schema;
+        const {types, operators} = this.state.schema;
 
         return {
             id: `r-${uniqueId()}`,
@@ -280,7 +280,7 @@ export default class QueryBuilder extends React.Component {
             for (let field in rule) {
                 // console.log("field===field", field==="field")
                 // console.log("rule", rule)
-                if((field !== "field") && (field !== "id")) {
+                if((field !== "type") && (field !== "id")) {
                     console.log("field", field)
                     delete rule[field]
                 }
@@ -291,7 +291,7 @@ export default class QueryBuilder extends React.Component {
             for (let field in rule) {
                 // console.log("field===field", field==="field")
                 // console.log("rule", rule)
-                if((field !== "field") && (field !== "id")) {
+                if((field !== "type") && (field !== "id")) {
                     console.log("field", field)
                     delete rule[field]
                 }

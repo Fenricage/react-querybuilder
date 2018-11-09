@@ -24,6 +24,7 @@ class GeneralRule extends Component {
     render() {
 
         const {
+            type,
             field,
             operator,
             custom,
@@ -33,7 +34,7 @@ class GeneralRule extends Component {
             value,
             level,
             translations,
-            fields,
+            types,
             controls,
             getOperators,
             getLevel,
@@ -55,7 +56,7 @@ class GeneralRule extends Component {
                         React.createElement(controls.fieldSelector,
                             {
                                 options: ruleFields,
-                                title: translations.fields.title,
+                                title: translations.types.title,
                                 value: ruleField,
                                 className: `rule-fields ${classNames.fields}`,
                                 handleOnChange: (value) => {

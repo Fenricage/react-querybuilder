@@ -3,7 +3,7 @@ import QueryBuilder from '../src/index';
 import ReactDOM from "react-dom";
 import React from 'react';
 
-const fields = [
+const types = [
     {name: undefined, label: 'Condotion type..'},
     {name: 'sensor_parameter', label: 'Sensor Parameter'},
     {name: 'general_rule', label: 'General Rule'},
@@ -40,7 +40,7 @@ let test = {
     rules: [
         {
             id: 'r-9fd53882-8a00-4c81-8450-c9d5a5619690',
-            field: 'general_rule',
+            type: 'general_rule',
             value: 'inside',
             operator: '<',
             ruleField: 'in_house'
@@ -66,8 +66,8 @@ class RootView extends React.Component {
             <div className="flex-box">
                 <div className="scroll">
 
-                    <QueryBuilder fields={this.props.fields}
-                                  // query={test}
+                    <QueryBuilder types={this.props.types}
+                                  query={test}
                                   ruleFields={this.props.ruleFields}
                                   valuesGeneralRule={this.props.valuesGeneralRule}
                                   sensorFields={this.props.sensorFields}
@@ -117,7 +117,7 @@ class RootView extends React.Component {
 
 ReactDOM.render(
     <RootView
-        fields={fields}
+        types={types}
         ruleFields={ruleFields}
         valuesGeneralRule={valuesGeneralRule}
         sensorFields={sensorFields}

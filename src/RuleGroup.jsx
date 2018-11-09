@@ -102,6 +102,7 @@ export default class RuleGroup extends React.Component {
                                 : <Rule key={r.id}
                                         id={r.id}
                                         field={r.field}
+                                        type={r.type}
                                         value={r.value}
                                         operator={r.operator}
                                         custom={r.custom}
