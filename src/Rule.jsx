@@ -107,6 +107,7 @@ export default class Rule extends React.Component {
                         onRuleFieldChanged={this.onRuleFieldChanged}
                         onSensorFieldChanged={this.onSensorFieldChanged}
                         onObjectFieldChanged={this.onObjectFieldChanged}
+                        removeTemplate={this.removeTemplate}
                     />
                 )
                 break;
@@ -195,7 +196,7 @@ export default class Rule extends React.Component {
     }
 
     onFieldChanged = (value) => {
-        this.removeTemplate()
+        this.removeTemplate("main")
         this.onElementChanged('field', value);
 
     }
@@ -237,13 +238,13 @@ export default class Rule extends React.Component {
         this.props.schema.onRuleRemove(this.props.id, this.props.parentId);
     }
 
-    removeTemplate = (event) => {
-        if(event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+    removeTemplate = (templateName) => {
+        // if(event) {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        // }
 
-        this.props.schema.onTemplateRemove(this.props.id, this.props.parentId);
+        this.props.schema.onTemplateRemove(this.props.id, this.props.parentId, templateName);
     }
 
 

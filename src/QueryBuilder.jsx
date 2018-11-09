@@ -92,8 +92,6 @@ export default class QueryBuilder extends React.Component {
 
         return [
             {name: undefined, label: 'Select'},
-            {name: 'null', label: 'Is Null'},
-            {name: 'notNull', label: 'Is Not Null'},
             {name: 'in', label: 'In'},
             {name: 'notIn', label: 'Not In'},
             {name: '=', label: '='},
@@ -280,16 +278,27 @@ export default class QueryBuilder extends React.Component {
         //obj assign for new rule
         const rule = {...parent.rules[index]}
         
-
-        for (let field in rule) {
-            // console.log("field===field", field==="field")
-            // console.log("rule", rule)
-            if((field !== "field") && (field !== "id")) {
-                console.log("field", field)
-                delete rule[field]
+        if(templateName === "main") {
+            for (let field in rule) {
+                // console.log("field===field", field==="field")
+                // console.log("rule", rule)
+                if((field !== "field") && (field !== "id")) {
+                    console.log("field", field)
+                    delete rule[field]
+                }
             }
         }
 
+        if(templateName === "operator") {
+            for (let field in rule) {
+                // console.log("field===field", field==="field")
+                // console.log("rule", rule)
+                if((field !== "field") && (field !== "id")) {
+                    console.log("field", field)
+                    delete rule[field]
+                }
+            }
+        }
 
 
         // delete rule.operator
@@ -299,8 +308,6 @@ export default class QueryBuilder extends React.Component {
         //obj assign
         parent.rules[index] = {...rule}
         console.log("parent.rules INDEX", rule)
-
-
 
 
         this.setState({root: newState});

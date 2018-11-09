@@ -19,11 +19,29 @@ class SensorParameter extends Component {
             this.setState({
                 ruleIsSelected: true
             })
+
         }
     }
 
+    setOperatorType(value) {
+        const {onOperatorChanged} = this.props
 
+        //type operator depending on the type of sensor
+        switch (value) {
+            case "sensor_1":
+                onOperatorChanged("=")
+                this.setState({
+                    operatorType: "boolean"
+                })
+                break
 
+            case "sensor_2":
+                this.setState({
+                    operatorType: "number"
+                })
+                break
+        }
+    }
 
 
     render() {
@@ -52,11 +70,71 @@ class SensorParameter extends Component {
             onCustomChanged,
             onRuleFieldChanged,
             onSensorFieldChanged,
-            onObjectFieldChanged
+            onObjectFieldChanged,
+            removeTemplate
         } = this.props
 
 
+        let operatorTemplate = null
 
+        //type operator template depending on the type of operator
+        switch (this.state.operatorType) {
+            case "boolean":
+                operatorTemplate = (
+                    <Fragment>
+                        <span>=</span>
+
+                        {React.createElement(controls.operatorSelector,
+                            {
+                                field: field,
+                                title: translations.operators.title,
+                                options: valuesGeneralRule,
+                                value: value,
+                                className: `rule-operators ${classNames.operators}`,
+                                handleOnChange: onValueChanged,
+                                level: level
+                            }
+                        )}
+                    </Fragment>
+                )
+
+                break
+            case "number":
+                operatorTemplate = (
+                    <Fragment>
+                        {
+                            React.createElement(controls.operatorSelector,
+                                {
+                                    field: field,
+                                    title: translations.operators.title,
+                                    options: getOperators(field),
+                                    value: operator,
+                                    className: `rule-operators ${classNames.operators}`,
+                                    handleOnChange: onOperatorChanged,
+                                    level: level
+                                }
+                            )
+
+
+                        }
+                        {
+                            React.createElement(controls.valueEditor,
+                                {
+                                    field: field,
+                                    title: translations.value.title,
+                                    operator: operator,
+                                    value: value,
+                                    className: `rule-value ${classNames.value}`,
+                                    handleOnChange: onValueChanged,
+                                    level: level
+                                }
+                            )
+                        }
+                    </Fragment>
+                )
+
+                break
+        }
 
 
         return (
@@ -73,10 +151,18 @@ class SensorParameter extends Component {
                                 value: sensorField,
                                 className: `rule-fields ${classNames.fields}`,
                                 handleOnChange: (value) => {
+
+
                                     this.setState({
                                         ruleIsSelected: true
                                     })
+
+                                    //remove
+                                    removeTemplate("main")
                                     onSensorFieldChanged(value)
+                                    this.setOperatorType(value)
+
+
                                 },
                                 level: level
                             }
@@ -85,58 +171,56 @@ class SensorParameter extends Component {
                 </section>
 
 
-                {
-                    this.state.ruleIsSelected ?
-                        (
-                            <Fragment>
-                                {/*<span>*/}
-                                    {/*=*/}
-                                {/*</span>*/}
-                                <section>
-                                    <h3>Object</h3>
-                                    {
-                                        React.createElement(controls.operatorSelector,
-                                            {
-                                                field: field,
-                                                title: translations.operators.title,
-                                                options: objectFields,
-                                                value: objectField,
-                                                className: `rule-operators ${classNames.operators}`,
-                                                handleOnChange: (value) => {
+                {/*{*/}
+                {/*this.state.ruleIsSelected ?*/}
+                {/*(*/}
+                {/*<Fragment>*/}
+                {/*/!*<span>*!/*/}
+                {/*/!*=*!/*/}
+                {/*/!*</span>*!/*/}
+                {/*<section>*/}
+                {/*<h3>Object</h3>*/}
+                {/*{*/}
+                {/*React.createElement(controls.operatorSelector,*/}
+                {/*{*/}
+                {/*field: field,*/}
+                {/*title: translations.operators.title,*/}
+                {/*options: objectFields,*/}
+                {/*value: objectField,*/}
+                {/*className: `rule-operators ${classNames.operators}`,*/}
+                {/*handleOnChange: (value) => {*/}
 
-                                                    console.log("objectFields", objectFields)
-                                                    let currentField = objectFields.find((field, index) => {
-                                                        return field.name === value
-                                                    })
+                {/*console.log("objectFields", objectFields)*/}
+                {/*let currentField = objectFields.find((field, index) => {*/}
+                {/*return field.name === value*/}
+                {/*})*/}
 
-                                                    this.setState({
-                                                        operatorType: currentField.type
-                                                    })
+                {/*this.setState({*/}
+                {/*operatorType: currentField.type*/}
+                {/*})*/}
 
 
-                                                    console.log("currentField", currentField)
-                                                    console.log("value", value)
-                                                    onObjectFieldChanged(value)
+                {/*console.log("currentField", currentField)*/}
+                {/*console.log("value", value)*/}
+                {/*onObjectFieldChanged(value)*/}
 
-                                                },
-                                                level: level
-                                            }
-                                        )
-                                    }
-                                </section>
-                            </Fragment>
-                        ) :
-                        null
-                }
+                {/*},*/}
+                {/*level: level*/}
+                {/*}*/}
+                {/*)*/}
+                {/*}*/}
+                {/*</section>*/}
+                {/*</Fragment>*/}
+                {/*) :*/}
+                {/*null*/}
+                {/*}*/}
+
 
                 {
                     this.state.operatorType ?
-                        (
-                            <p>124</p>
-                        ) :
-                        (null)
+                        operatorTemplate :
+                        null
                 }
-
 
 
             </Fragment>
