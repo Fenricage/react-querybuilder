@@ -14,8 +14,10 @@ class SensorParameter extends Component {
 
 
     componentDidMount() {
-        const {sensorField} = this.props
-        if (sensorField) {
+        const {sensor_id} = this.props
+        if (sensor_id) {
+
+            this.setOperatorType(sensor_id)
             this.setState({
                 ruleIsSelected: true
             })
@@ -27,6 +29,7 @@ class SensorParameter extends Component {
         const {onOperatorChanged} = this.props
 
         //type operator depending on the type of sensor
+
         switch (value) {
             case "sensor_1":
                 onOperatorChanged("=")
@@ -45,15 +48,16 @@ class SensorParameter extends Component {
 
 
     render() {
-
         const {
             type,
             field,
             operator,
             custom,
             ruleFields,
+            verbose_name,
             valuesGeneralRule,
             sensorFields,
+            sensor_id,
             sensorField,
             objectFields,
             objectField,
@@ -72,9 +76,9 @@ class SensorParameter extends Component {
             onRuleFieldChanged,
             onSensorFieldChanged,
             onObjectFieldChanged,
+            onVerboseNameChanged,
             removeTemplate
         } = this.props
-
 
         let operatorTemplate = null
 
@@ -107,7 +111,6 @@ class SensorParameter extends Component {
                             React.createElement(controls.operatorSelector,
                                 {
                                     field: field,
-                                    title: translations.operators.title,
                                     options: getOperators(field),
                                     value: operator,
                                     className: `rule-operators ${classNames.operators}`,
@@ -142,14 +145,12 @@ class SensorParameter extends Component {
             <Fragment>
 
                 {/*second field for dynamic add field next*/}
-                <section>
-                    <h3>Sensor</h3>
                     {
                         React.createElement(controls.fieldSelector,
                             {
                                 options: sensorFields,
-                                title: translations.types.title,
-                                value: sensorField,
+                                title: translations.sensor.title,
+                                value: sensor_id,
                                 className: `rule-fields ${classNames.fields}`,
                                 handleOnChange: (value) => {
 
@@ -158,9 +159,17 @@ class SensorParameter extends Component {
                                         ruleIsSelected: true
                                     })
 
+
                                     //remove
                                     removeTemplate("main")
+                                    //add property after remove template
+                                    const sensor = sensorFields.find((sensor) => {
+                                        return sensor.name === value
+                                    })
+
+                                    onVerboseNameChanged(sensor.label)
                                     onSensorFieldChanged(value)
+
                                     this.setOperatorType(value)
 
 
@@ -169,7 +178,6 @@ class SensorParameter extends Component {
                             }
                         )
                     }
-                </section>
 
 
                 {/*{*/}

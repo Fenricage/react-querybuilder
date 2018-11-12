@@ -9,10 +9,14 @@ const ValueEditor = (props) => {
   }
 
   return (
-    <input type="text"
-           value={value}
-           title={title}
-           onChange={e=>handleOnChange(e.target.value)} />
+      <section>
+        <h3>{title}</h3>
+          <input type="text"
+                 value={value}
+                 title={title}
+                 onChange={e=>handleOnChange(e.target.value)} />
+      </section>
+
   );
 };
 

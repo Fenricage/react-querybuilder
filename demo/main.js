@@ -24,8 +24,8 @@ const valuesGeneralRule = [
 
 const sensorFields = [
     {name: undefined, label: 'Select sensor'},
-    {name: 'sensor_1', label: 'Sensor'},
-    {name: 'sensor_2', label: 'Sensor2'},
+    {name: 'sensor_1', label: 'Sensor_1'},
+    {name: 'sensor_2', label: 'Sensor_2'},
 ];
 
 const objectFields = [
@@ -40,10 +40,19 @@ let test = {
     rules: [
         {
             id: 'r-9fd53882-8a00-4c81-8450-c9d5a5619690',
+            type: 'sensor_parameter',
+            value: 'away',
+            verbose_name: "Sensor_2",
+            operator: '<',
+            sensor_id: "sensor_2",
+        },
+        {
+            id: 'r-9fd53552-8a00-4c81-8450-c9d5a5619690',
             type: 'general_rule',
             value: 'inside',
-            operator: '<',
-            ruleField: 'in_house'
+            verbose_name: "Hallway Motions",
+            operator: '=',
+            field: "hallway_motions"
         }
     ],
     combinator: 'and'

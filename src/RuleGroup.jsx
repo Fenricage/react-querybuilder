@@ -39,7 +39,6 @@ export default class RuleGroup extends React.Component {
                         {
                             options: combinators,
                             value: combinator,
-                            title: translations.combinators.title,
                             className: `ruleGroup-combinators ${classNames.combinators}`,
                             handleOnChange: this.onCombinatorChange,
                             rules: rules,
@@ -86,6 +85,7 @@ export default class RuleGroup extends React.Component {
                 }
                 {
                     rules.map(r => {
+                        console.log("r", r)
                         return (
                             isRuleGroup(r)
                                 ? <RuleGroup key={r.id}
@@ -112,6 +112,10 @@ export default class RuleGroup extends React.Component {
 
                                         sensorFields={sensorFields}
                                         sensorField={r.sensorField}
+
+
+                                        verbose_name={r.verbose_name}
+                                        sensor_id={r.sensor_id}
 
                                         objectFields={objectFields}
                                         objectField={r.objectField}

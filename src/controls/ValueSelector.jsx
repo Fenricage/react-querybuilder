@@ -41,43 +41,35 @@ export class ValueSelector extends Component {
         })
 
         return (
-            <select className={className}
-                    value={value}
-                    title={title}
-                    onChange={e => {
-                        handleOnChange(e.target.value)
-                        this.setState({
-                            defaultValueDeleted: true
-                        })
-                        // if(!defaultValueDeleted) {
-                        //     delete options[0]
+            <section>
 
-                        // }
-                    }}>
-                <option key={-1} value="" disabled selected>{options[0].label}</option>
-                {selectOptions}
+                {
+                 title ?
+                     (
+                         <h3>{title}</h3>
+                     ) :
+                     null
+                }
+                <select className={className}
+                        value={value}
+                        title={title}
+                        onChange={e => {
+                            handleOnChange(e.target.value)
+                            this.setState({
+                                defaultValueDeleted: true
+                            })
+                        }}>
+                    <option key={-1} value="" disabled selected>{options[0].label}</option>
+                    {selectOptions}
 
-            </select>
+                </select>
+            </section>
         );
 
     }
 }
 
 
-// const ValueSelector = (props) => {
-//
-//
-
-// }
-//
 ValueSelector.displayName = 'ValueSelector';
-//
-// ValueSelector.propTypes = {
-//     value: PropTypes.string,
-//     options: PropTypes.array.isRequired,
-//     className: PropTypes.string,
-//     handleOnChange: PropTypes.func,
-//     title: PropTypes.string,
-// };
 
 export default ValueSelector;

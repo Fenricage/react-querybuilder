@@ -38,7 +38,9 @@ export default class Rule extends React.Component {
             objectFields,
             objectField,
             ruleFields,
+            sensor_id,
             value,
+            verbose_name,
             translations,
             schema: {
                 types,
@@ -51,7 +53,6 @@ export default class Rule extends React.Component {
         var level = getLevel(this.props.id);
 
 
-
         let rule = null
 
         switch (type) {
@@ -59,8 +60,10 @@ export default class Rule extends React.Component {
                 rule = (
                     <GeneralRule
                         type={type}
+                        field={field}
                         ruleField={ruleField}
                         ruleFields={ruleFields}
+                        verbose_name={verbose_name}
                         valuesGeneralRule={valuesGeneralRule}
                         operator={operator}
                         custom={custom}
@@ -72,11 +75,12 @@ export default class Rule extends React.Component {
                         getLevel={getLevel}
                         classNames={classNames}
                         level={level}
-                        onFieldChanged={this.onFieldChanged}
                         onOperatorChanged={this.onOperatorChanged}
                         onValueChanged={this.onValueChanged}
                         onCustomChanged={this.onCustomChanged}
                         onRuleFieldChanged={this.onRuleFieldChanged}
+                        onVerboseNameChanged={this.onVerboseNameChanged}
+                        onFieldChanged={this.onFieldChanged}
                     />
                 )
                 break;
@@ -93,6 +97,8 @@ export default class Rule extends React.Component {
                         sensorField={sensorField}
                         objectFields={objectFields}
                         objectField={objectField}
+                        sensor_id={sensor_id}
+                        verbose_name={verbose_name}
                         value={value}
                         translations={translations}
                         types={types}
@@ -108,6 +114,7 @@ export default class Rule extends React.Component {
                         onRuleFieldChanged={this.onRuleFieldChanged}
                         onSensorFieldChanged={this.onSensorFieldChanged}
                         onObjectFieldChanged={this.onObjectFieldChanged}
+                        onVerboseNameChanged={this.onVerboseNameChanged}
                         removeTemplate={this.removeTemplate}
                     />
                 )
@@ -118,21 +125,18 @@ export default class Rule extends React.Component {
         return (
             <div className={`rule ${classNames.rule}`}>
 
-                <section>
-                    <h3>Type</h3>
                     {
                         React.createElement(controls.fieldSelector,
                             {
                                 options: types,
-                                title: translations.types.title,
+                                title: translations.type.title,
                                 value: type,
                                 className: `rule-fields ${classNames.fields}`,
-                                handleOnChange: this.onFieldChanged,
+                                handleOnChange: this.onTypeChanged,
                                 level: level
                             }
                         )
                     }
-                </section>
 
 
                 {rule}
@@ -196,10 +200,14 @@ export default class Rule extends React.Component {
         );
     }
 
-    onFieldChanged = (value) => {
+    onTypeChanged = (value) => {
         this.removeTemplate("main")
         this.onElementChanged('type', value);
 
+    }
+
+    onFieldChanged = (value) => {
+        this.onElementChanged('field', value);
     }
 
     onOperatorChanged = (value) => {
@@ -219,7 +227,7 @@ export default class Rule extends React.Component {
     }
 
     onSensorFieldChanged = (value) => {
-        this.onElementChanged('sensorField', value);
+        this.onElementChanged('sensor_id', value);
     }
 
     onObjectFieldChanged = (value) => {

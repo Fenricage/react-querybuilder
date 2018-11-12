@@ -12,8 +12,8 @@ class GeneralRule extends Component {
 
 
     componentDidMount() {
-        const {ruleField} = this.props
-        if (ruleField) {
+        const {verbose_name} = this.props
+        if (verbose_name) {
             this.setState({
                 ruleIsSelected: true
             })
@@ -29,6 +29,7 @@ class GeneralRule extends Component {
             operator,
             custom,
             ruleField,
+            verbose_name,
             ruleFields,
             valuesGeneralRule,
             value,
@@ -43,34 +44,36 @@ class GeneralRule extends Component {
             onOperatorChanged,
             onValueChanged,
             onCustomChanged,
-            onRuleFieldChanged
+            onRuleFieldChanged,
+            onVerboseNameChanged,
         } = this.props
-        console.log("operator", operator)
         return (
             <Fragment>
 
                 {/*second field for dynamic add field next*/}
-                <section>
-                    <h3>Rule</h3>
                     {
                         React.createElement(controls.fieldSelector,
                             {
                                 options: ruleFields,
-                                title: translations.types.title,
-                                value: ruleField,
+                                title: translations.rule.title,
+                                value: field,
                                 className: `rule-fields ${classNames.fields}`,
                                 handleOnChange: (value) => {
                                     this.setState({
                                         ruleIsSelected: true
                                     })
+
+                                    const rule = ruleFields.find((rule) => {
+                                        return rule.name === value
+                                    })
+                                    onVerboseNameChanged(rule.label)
                                     onOperatorChanged("=")
-                                    onRuleFieldChanged(value)
+                                    onFieldChanged(value)
                                 },
                                 level: level
                             }
                         )
                     }
-                </section>
 
 
                 {
@@ -78,13 +81,11 @@ class GeneralRule extends Component {
                         (
                             <Fragment>
                                 <span>{operator ? operator : null}</span>
-                                <section>
-                                    <h3>Value</h3>
                                     {
                                         React.createElement(controls.operatorSelector,
                                             {
                                                 field: field,
-                                                title: translations.operators.title,
+                                                title: translations.value.title,
                                                 options: valuesGeneralRule,
                                                 value: value,
                                                 className: `rule-operators ${classNames.operators}`,
@@ -93,7 +94,6 @@ class GeneralRule extends Component {
                                             }
                                         )
                                     }
-                                </section>
                             </Fragment>
                         ) :
                         null

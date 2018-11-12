@@ -59,8 +59,17 @@ export default class QueryBuilder extends React.Component {
             types: {
                 title: "Types",
             },
+            type: {
+                title: "Type",
+            },
             operators: {
                 title: "Operators",
+            },
+            sensor: {
+                title: "Sensor"
+            },
+            rule: {
+                title: "Rule"
             },
             value: {
                 title: "Value",
@@ -278,10 +287,8 @@ export default class QueryBuilder extends React.Component {
         
         if(templateName === "main") {
             for (let field in rule) {
-                // console.log("field===field", field==="field")
-                // console.log("rule", rule)
+
                 if((field !== "type") && (field !== "id")) {
-                    console.log("field", field)
                     delete rule[field]
                 }
             }
@@ -289,23 +296,14 @@ export default class QueryBuilder extends React.Component {
 
         if(templateName === "operator") {
             for (let field in rule) {
-                // console.log("field===field", field==="field")
-                // console.log("rule", rule)
+
                 if((field !== "type") && (field !== "id")) {
-                    console.log("field", field)
                     delete rule[field]
                 }
             }
         }
 
-
-        // delete rule.operator
-        // delete rule.ruleField
-        // delete rule.value
-
-        //obj assign
         parent.rules[index] = {...rule}
-        console.log("parent.rules INDEX", rule)
 
 
         this.setState({root: newState});
